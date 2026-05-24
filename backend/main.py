@@ -7,7 +7,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import List
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
@@ -88,7 +88,8 @@ def create_task(payload: TaskCreate) -> Task:
     return task
 
 
-@app.delete("/tasks", status_code=204)
-def clear_tasks() -> None:
+@app.delete("/tasks", status_code=204, response_class=Response)
+def clear_tasks() -> Response:
     """Convenience endpoint — useful during demo."""
     _reset_store()
+    return Response(status_code=204)
